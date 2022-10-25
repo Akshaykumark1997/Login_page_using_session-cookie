@@ -39,14 +39,23 @@ app.post('/login',(req,res)=>{
     if(req.body.username===loginDetails.username&&req.body.password===loginDetails.password){
         session = req.session;
         session.username = req.body.username;
-        res.render('index_home');
+        console.log(req.session);
+        res.redirect('home');
     }else{
         res.render('index',{err_message:"username or password incorrect"});
     }
 });
+app.get('/home',(req,res)=>{
+    session=req.session;
+    if(session.username){
+        res.render('index_home');
+    }else{
+        res.render('index');
+    }
+});
 app.get('/logout',(req,res)=>{
     req.session.destroy();
-    res.render('index');
+    res.redirect('/');
 })
 
 
