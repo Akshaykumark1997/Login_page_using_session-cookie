@@ -19,6 +19,14 @@ app.use(sessions({
     cookie: {maxAge:30000},
 }));
 
+app.use((req, res, next) => {
+    res.header(
+      "Cache-Control",
+      "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
+    );
+    next();
+  });
+
 
 
 let session;
@@ -45,13 +53,6 @@ app.post('/login',(req,res)=>{
         res.render('index',{err_message:"username or password incorrect"});
     }
 });
-app.use((req, res, next) => {
-    res.header(
-      "Cache-Control",
-      "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
-    );
-    next();
-  });
 app.get('/home',(req,res)=>{
     session=req.session;
     if(session.username){
